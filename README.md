@@ -14,8 +14,8 @@ Configuration of Kafka Sink
     agent_log.sinks.kafka.producer.type = async
     agent_log.sinks.kafka.serializer.class = kafka.serializer.StringEncoder
 
-Speical Thanks
----------
 
-In fact I'm a newbie in Java. I have learnt a lot from [flumg-ng-rabbitmq](https://github.com/jcustenborder/flume-ng-rabbitmq). Thanks to [Jeremy Custenborder](https://github.com/jcustenborder).
-
+Setup flume
+    copy the result jar to lib directory of your flume installation
+    copy scala-library-*.jar to lib directory of your flume installation. The library can be found on your local maven repository. under linuxe is ~/.m2
+    copy metrics-core-2.2.0.jar to lib directory of your flume installation
