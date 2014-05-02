@@ -19,7 +19,8 @@
 package org.apache.flume.sink.kafka;
 
 import kafka.javaapi.producer.Producer;
-import kafka.javaapi.producer.ProducerData;
+import kafka.producer.KeyedMessage;
+import kafka.producer.ProducerConfig;
 
 import org.apache.flume.Channel;
 import org.apache.flume.Context;
@@ -54,32 +55,33 @@ public class KafkaSink extends AbstractSink implements Configurable {
 
 	public Status process() throws EventDeliveryException {
 		Channel channel = getChannel();
-		Transaction tx = channel.getTransaction();
-		try {
-			tx.begin();
-			Event event = channel.take();
-			if (event == null) {
-				tx.commit();
-				return Status.READY;
+                Transaction tx = channel.getTransaction();
+                try {
+                        tx.begin();
+                        Event event = channel.take();
+                        if (event == null) {
+                                tx.commit();
+                                return Status.READY;
 
-			}
-			producer.send(new ProducerData<String, String>(topic, new String(event
-					.getBody())));
-			log.trace("Message: {}", event.getBody());
-			tx.commit();
-			return Status.READY;
-		} catch (Exception e) {
-			try {
-				tx.rollback();
-				return Status.BACKOFF;
-			} catch (Exception e2) {
-				log.error("Rollback Exception:{}", e2);
-			}		
-			log.error("KafkaSink Exception:{}", e);
-			return Status.BACKOFF;
-		} finally {
-			tx.close();
-		}
+                        }
+                        String data = new String(event.getBody(), "utf-8");
+                        this.producer.send(new KeyedMessage<String, String>(this.topic, data));
+                        log.trace("Message: {}", event.getBody());
+                        tx.commit();
+                        return Status.READY;
+                } catch (Exception e) {
+                        try {
+                                tx.rollback();
+                                return Status.BACKOFF;
+                        } catch (Exception e2) {
+                                log.error("Rollback Exception:{}", e2);
+                        }
+                        log.error("KafkaSink Exception:{}", e);
+                        return Status.BACKOFF;
+                } finally {
+                        tx.close();
+                }
+
 	}
 
 	public void configure(Context context) {
