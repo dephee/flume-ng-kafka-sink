@@ -18,9 +18,9 @@
     	<artifactId>flume-ng-core</artifactId>
     	</dependency>
 	<dependency>
- 		<groupId>com.linkedin.kafka</groupId>
-  		<artifactId>kafka</artifactId>
-  		<version>0.7.2</version>
+ 		<groupId>org.apache.kafka</groupId>
+  		<artifactId>kafka_2.8.0</artifactId>
+  		<version>0.8.1.1</version>
 	</dependency>
     <dependency>
         <groupId>org.scala-lang</groupId>
