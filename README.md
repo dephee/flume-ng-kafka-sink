@@ -16,6 +16,7 @@ Configuration of Kafka Sink
 
 
 Setup flume
+----------
     copy the result jar to lib directory of your flume installation
     copy scala-library-*.jar to lib directory of your flume installation. The library can be found on your local maven repository. under linuxe is ~/.m2
     copy metrics-core-2.2.0.jar to lib directory of your flume installation
